@@ -1,7 +1,9 @@
 from flask import Flask, render_template, session, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
+from data import Assignment
 
+Assignment = Assignment()
 
 
 app = Flask(__name__)
@@ -156,10 +158,10 @@ def dashboard():
         return render_template('admin_dashboard.html',user= user, users=all_data)
     elif user.role == 'teacher':
         # Logic for teacher dashboard
-        return render_template('teacher_dashboard.html', user=user)
+        return render_template('teacher_dashboard.html', user=user, assignments = Assignment)
     elif user.role == 'student':
         # Logic for student dashboard
-        return render_template('student_dashboard.html', user=user)
+        return render_template('student_dashboard.html', user=user, assignments = Assignment)
     else:
         flash('Invalid user role')
         return redirect(url_for('login'))

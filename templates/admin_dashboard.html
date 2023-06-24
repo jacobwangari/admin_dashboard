@@ -1,6 +1,10 @@
 {% extends 'base.html' %} 
 
-
+{% block nav %}
+<li class="nav-item">
+  <a class="nav-link" href="{{ url_for('logout')}}">Logout</a>
+</li>
+{% endblock %}
 {% block section %}
 <div class="jumbotron p-3">
   <div class="well text-center">
@@ -22,7 +26,7 @@
           >
             Add New
           </button>
-          <a href="{{ url_for('login') }}">Login</a>
+        
         </h2>
 
         {% with messages = get_flashed_messages() %}
