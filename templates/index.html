@@ -1,243 +1,289 @@
-{% extends 'base.html' %} {% block body %}
-<div class="jumbotron p-3">
-  <div class="well text-center">
-    <h1>This is admin dashboard</h1>
+{% extends "base.html" %} {% block section %}
+
+<section class="hero_section">
+  <div class="hero-container container">
+    <div class="hero_detail-box">
+      <h3>
+        Welcome to <br />
+        Chesingele Secondary
+      </h3>
+      <h1>School</h1>
+      <p>
+        To get comprehensive information regarding the school performance for
+        each year, kindly contact the school’s administration using the contacts
+        given below or visit the school for more information.
+      </p>
+      
+      <div class="hero_btn-continer">
+        <a href="contact.html" class="call_to-btn btn_white-border">
+          <span> Contact </span>
+          <img
+            src="{{url_for('static',filename = 'images/right-arrow.png')}}"
+            alt=""
+          />
+        </a>
+      </div>
+    </div>
+    <div class="hero_img-container">
+      <div>
+        <img src="images/hero.png" alt="" class="img-fluid">
+      </div>
+    </div>
+    
+    </div>
   </div>
-</div>
+</section>
+{% endblock %} {% block body %}
 
-<div class="container">
-  <div class="row">
-    <div class="col md-12">
-      <div class="jumbotron p-3">
-        <h2>
-          Manage <b>Students and Teachers</b>
-          <button
-            type="button"
-            data-toggle="modal"
-            data-target="#mymodal"
-            class="btn btn-success float-right"
-          >
-            Add New
-          </button>
-        </h2>
+<!-- about section -->
+<section class="about_section layout_padding">
+  <div class="container">
+    <h2 class="main-heading">About School</h2>
+    <p class="text-center">
+      At Chesingele secondary school, we strive to provide a well-rounded
+      education that nurtures the intellectual, social, and emotional
+      development of our students, equipping them with the skills and knowledge
+      to thrive in an ever-changing world
+    </p>
+    <div class="about_img-box">
+      <img
+        src="{{url_for('static',filename = 'images/kids.jpg')}}"
+        alt=""
+        class="img-fluid w-100"
+      />
+    </div>
+    <div class="d-flex justify-content-center mt-5">
+      <a href="" class="call_to-btn">
+        <span> Read More </span>
+        <img
+          src="{{url_for('static',filename = 'images/right-arrow.png')}}"
+          alt=""
+        />
+      </a>
+    </div>
+  </div>
+</section>
 
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        {% for message in messages %}
+<!-- about section -->
 
-        <div class="alert alert-success alert-dismisable" role = "alert">
-          <button type = "button" class = "close" data-dismiss="alert" aria-label="close">
-           <span>x</span>
-          </button>
-         {{message}}
+<!-- teacher section -->
+<section class="teacher_section layout_padding-bottom">
+  <div class="container">
+    <h2 class="main-heading">Our Teachers</h2>
+    <p class="text-center">
+      Our dedicated team of highly qualified and passionate teachers brings a
+      wealth of expertise and enthusiasm to the classroom, creating an engaging
+      and supportive learning environment for our students.
+    </p>
+    <div class="teacher_container layout_padding2">
+      <div class="card-deck">
+        <div class="card">
+          <img
+            class="card-img-top"
+            src="{{url_for('static',filename = 'images/teacher-1.jpg')}}"
+            alt="Card image cap"
+          />
+          <div class="card-body">
+            <h5 class="card-title">Principal Mr. Mwangi Mutah</h5>
+          </div>
         </div>
-             
-         {% endfor %}
-         {% endif %}
-        {% endwith %}
+        <div class="card">
+          <img
+            class="card-img-top"
+            src="{{url_for('static',filename = 'images/teacher-2.jpg')}}"
+            alt="Card image cap"
+          />
+          <div class="card-body">
+            <h5 class="card-title">Deputy Principal Mr. Robert Auko</h5>
+          </div>
+        </div>
+        <div class="card">
+          <img
+            class="card-img-top"
+            src="{{url_for('static',filename = 'images/teacher-3.jpg')}}"
+            alt="Card image cap"
+          />
+          <div class="card-body">
+            <h5 class="card-title">Senior Teacher Mr.Machoka</h5>
+          </div>
+        </div>
 
-        <table class="table table-dark table-hover">
-          <tr>
-            <th>ID</th>
-            <th>Adm. Num</th>
-            <th>Name</th>
-            <th>Phone</th>
-            <th>Password</th>
-            <th>Role</th>
-            <th>Action</th>
-          </tr>
-{% for user in users %}
-          <tr>
-            <td>{{user.id}}</td>
-            <td>{{user.adm}}</td>
-            <td>{{user.name}}</td>
-            <td>{{user.phone}}</td>
-            <td>{{user.password}}</td>
-            <td>{{user.role}}</td>
-
-            <td>
-              <a
-                href="/update/{{user.id}}"
-                class="btn btn-warning btn-xs"
-                data-toggle="modal"
-                data-target="#modaledit{{user.id}}"
-                >Edit</a
-              >
-              <a
-                href="/delete/{{user.id}}"
-                class="btn btn-danger btn-xs"
-                onClick="return confirm('Are you sure to delete?')"
-                >Delete</a
-              >
-            </td>
-          </tr>
-
-      <!-- Modal Add user -->
-
-      <div id="modaledit{{user.id}}" class="modal fade" role="dialog" tabindex="-1">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title">Update Student/Teacher</h4>
-            </div>
-            <div class="modal-body">
-              <form action=" {{url_for('update')}}" method="post">
-                <div class="form-group">
-                  <label for="">Adm. Num : </label>
-                  <input type="hidden" name="id" value="{{user.id}}">
-                  <input
-                    type="text"
-                    class="form-control"
-                    name="adm"
-                    value="{{user.adm}}"
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="">Name : </label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    name="name"
-                    value = "{{user.name}}"
-                  />
-                </div>
-
-                <div class="form-group">
-                  <label for="">Phone : </label>
-                  <input
-                    type="number"
-                    class="form-control"
-                    name="phone"
-                    value="{{user.phone}}"
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="">Password : </label>
-                  <input
-                    type="password"
-                    class="form-control"
-                    name="password"
-                    value="{{user.password}}"
-                  />
-                </div>
-                <div class="form-group">
-                    <label for="">Role : </label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      name="role"
-                      value = "{{user.role}}"
-                    />
-                  </div>
-
-                <div class="form-group">
-                  <button class="btn btn-primary" type="submit">Update</button>
-                </div>
-              </form>
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
-              <button type="button" class="btn btn-primary">
-                Save changes
-              </button>
-            </div>
+        <div class="card">
+          <img
+            class="card-img-top"
+            src="{{url_for('static',filename = 'images/teacher-4.jpg')}}"
+            alt="Card image cap"
+          />
+          <div class="card-body">
+            <h5 class="card-title">Senior Teacher Mr. Rono</h5>
           </div>
         </div>
       </div>
+    </div>
 
-{% endfor %}
-        </table>
+    <div class="d-flex justify-content-center mt-3">
+      <a href="" class="call_to-btn">
+        <span> See More </span>
+        <img
+          src="{{url_for('static',filename = 'images/right-arrow.png')}}"
+          alt=""
+        />
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- teacher section -->
+
+<!-- vehicle section -->
+<section class="vehicle_section layout_padding">
+  <div class="container">
+    <h2 class="main-heading">Upcoming Events</h2>
+    <p class="text-center">
+      Stay updated and mark your calendars for a range of exciting upcoming
+      events at our secondary school, including engaging guest speakers,
+      captivating performances, and interactive workshops designed to enrich
+      students' learning experiences.
+    </p>
+    <div class="layout_padding-top">
+      <div
+        id="carouselExampleControls"
+        class="carousel slide"
+        data-ride="carousel"
+      >
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <div class="vehicle_img-box">
+              <img
+                src="{{url_for('static',filename = 'images/one.jpg')}}"
+                alt=""
+                class="img-fluid w-100"
+              />
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="vehicle_img-box">
+              <img
+                src="{{url_for('static',filename = 'images/two.jpg')}}"
+                alt=""
+                class="img-fluid w-100"
+              />
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="vehicle_img-box">
+              <img
+                src="{{url_for('static',filename = 'images/three.jpg')}}"
+                alt=""
+                class="img-fluid w-100"
+              />
+            </div>
+          </div>
+        </div>
+        <a
+          class="carousel-control-prev"
+          href="#carouselExampleControls"
+          role="button"
+          data-slide="prev"
+        >
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+        <a
+          class="carousel-control-next"
+          href="#carouselExampleControls"
+          role="button"
+          data-slide="next"
+        >
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+        </a>
       </div>
+    </div>
+  </div>
+</section>
 
-      <!-- Modal Add user -->
+<!-- vehicle section -->
+<!-- client section -->
+<section class="client_section layout_padding">
+  <div class="container">
+    <h2 class="main-heading">Our Alumni Feedback</h2>
+    <p class="text-center">
+      We value the voices of our students, and their feedback is integral to our
+      commitment to continuous improvement. Hear directly from our students
+      about their experiences, testimonials, and how our school has positively
+      impacted their learning journey
+    </p>
+    <div class="layout_padding2">
+      <div class="client_container d-flex flex-column">
+        <div class="client_detail d-flex align-items-center">
+          <div class="client_img-box">
+            <img
+              src="{{url_for('static',filename = 'images/student.png')}}"
+              alt=""
 
-    <div id="mymodal" class="modal fade" role="dialog" tabindex="-1">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title">Add New Student/Teacher</h4>
-              
-            </div>
+            />
+          </div>
+          <div class="client_detail-box">
+            <h4>James Kariuki</h4>
+            <span> (exercitation) </span>
+          </div>
+        </div>
+        <div class="client_text mt-4">
+          <p>
+            "Attending Chesingele Secondary School was a transformative
+            experience that laid the foundation for my future success. The
+            dedicated teachers, rigorous academic curriculum, and vibrant
+            extracurricular activities shaped my character, instilled a love for
+            learning, and prepared me for the challenges of higher education and
+            beyond. The supportive community at Chesingele Secondary School
+            fostered lifelong friendships and provided countless opportunities
+            for personal growth. I am grateful for the strong values and skills
+            I developed during my time at Chesingele Secondary School, which
+            continue to guide me in my professional and personal endeavors. I
+            can confidently say that Chesingele Secondary School prepared me to
+            thrive in a competitive world and set me on a path to achieve my
+            dreams."
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- client section -->
 
 
-            <div class="modal-body">
-              <form action="{{url_for('insert')}} " method="POST">
-                <div class="form-group">
-                  <label for="">Adm. Num : </label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    name="adm"
-                    required="1"
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="">Name : </label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    name="name"
-                    required="1"
-                  />
-                </div>
 
-                <div class="form-group">
-                  <label for="">Phone : </label>
-                  <input
-                    type="number"
-                    class="form-control"
-                    name="phone"
-                    required="1"
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="">Password : </label>
-                  <input
-                    type="password"
-                    class="form-control"
-                    name="password"
-                    required="1"
-                  />
-                </div>
+<!-- admission section -->
+<section class="admission_section">
+  <div class="container-fluid position-relative">
+    <div class="row h-100">
+      <div id="map" class="h-100 w-100"></div>
+      <div class="container">
+        <div class="admission_container position-absolute">
+          <div class="admission_img-box">
+            <img src="{{url_for('static',filename = 'images/kidss.jpg')}}" alt="" />
 
-                <div class="form-group">
-                    <label for="">Role : </label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      name="role"
-                      required="1"
-                    />
-                  </div>
-
-                <div class="form-group">
-                  <button class="btn btn-primary" type="submit">Add</button>
-                </div>
-              </form>
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-dismiss="modal"
-              >
-                Close
-              </button>
-              <button type="button" class="btn btn-primary">
-                Save changes
-              </button>
+          </div>
+          <div class="admission_detail">
+            <h3>Apply for Admission</h3>
+            <p class="mt-3 mb-4">
+              We invite aspiring students to embark on an exceptional
+              educational journey by applying for admission to our secondary
+              school, where they will find a nurturing environment, dedicated
+              teachers, and a comprehensive curriculum that fosters academic
+              excellence.
+            </p>
+            <div class="">
+              <a href="" class="admission_btn btn_on-hover"> Read More </a>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</section>
+<!-- admission section -->
 
 {% endblock %}

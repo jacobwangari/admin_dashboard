@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block section %}
+
+<section class="hero_section">
+  <div class="hero-container container">
+    <div class="hero_detail-box">
+      <h3>
+        Welcome to <br />
+        Chesingele Secondary
+      </h3>
+      <h1>School</h1>
+      <p>
+        To get comprehensive information regarding the school performance for
+        each year, kindly contact the school’s administration using the contacts
+        given below or visit the school for more information.
+      </p>
+      <div class="hero_btn-continer">
+        <a href="contact.html" class="call_to-btn btn_white-border">
+          <span> Contact </span>
+          <img
+            src="{{url_for('static',filename = 'images/right-arrow.png')}}"
+            alt=""
+          />
+        </a>
+      </div>
+    </div>
+    
+</section>
+{% endblock %}
+
+{% block body %}
+  <!-- contact section -->
+
+<section class="contact_section layout_padding-bottom">
+  <div class="container">
+    <h2 class="main-heading">Contact Now</h2>
+    <p class="text-center">
+      Have questions or need more information? Our friendly staff is ready to
+      assist you. You can contact us or send us a message. We are here to support you in any way we can.
+    </p>
+    <div class="">
+      <div class="contact_section-container">
+        <div class="row">
+          <div class="col-md-4 mx-auto">
+            <div class="contact-form">
+              <form action="">
+                <div>
+                  <input type="text" placeholder="Name" />
+                </div>
+                <div>
+                  <input type="text" placeholder="Phone Number" />
+                </div>
+                <div>
+                  <input type="email" placeholder="Email" />
+                </div>
+                <div>
+                  <input
+                    type="text"
+                    placeholder="Message"
+                    class="input_message"
+                  />
+                </div>
+                <div class="d-flex justify-content-center">
+                  <button type="submit" class="btn_on-hover">Send</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- end contact section -->
+
+{% endblock %}
+
+
