@@ -1,16 +1,33 @@
 from flask import Flask, render_template, session, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
-from data import Assignment
-
-Assignment = Assignment()
-
+from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = "Secret Key"
 app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:PassWord%40123@localhost/chesingele"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app) 
+
+
+class Assignment(db.Model):
+    __tablename__ = 'assignments'
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    title = db.Column(db.String(255))
+    subject = db.Column(db.String(255))
+    class_name = db.Column(db.String(255))
+    body = db.Column(db.Text)
+
+    def __init__(self, title, subject, class_name, body):
+        self.title = title
+        self.subject = subject
+        self.class_name = class_name
+        self.body = body
+    
+    def __repr__(self):
+        return f"Assignment(id={self.id}, title='{self.title}', subject='{self.subject}', class_name='{self.class_name}', body='{self.body}')"
+
 
 class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -66,13 +83,37 @@ def activities():
 def contact():
     return render_template('contact.html')
 
+@app.route('/add_assignment', methods=['GET', 'POST'])
+def add_assignment():
+    if request.method == 'POST':
+        title = request.form['title']
+        subject = request.form['subject']
+        class_name = request.form['class']
+        body = request.form['body']
+        date = datetime.utcnow()
+
+        assignment = Assignment(title=title, subject=subject, class_name=class_name, body=body)
+        db.session.add(assignment)
+        db.session.commit()
+
+        flash("Assignment added successfully")
+
+        return redirect(url_for('dashboard'))
+
+    return render_template('add_assignment.html')
+
 @app.route("/assignments")
 def assignments():
-    return render_template('assignments.html', assignments = Assignment)
+    assignments = Assignment.query.all() 
+    return render_template('assignments.html', assignments = assignments)
 
-@app.route("/assignment/<string:id>")
-def assignment(id):
-    return render_template('assignment.html', id=id)
+@app.route('/assignment/<int:assignment_id>')
+def display_assignment(assignment_id):
+    assignment = Assignment.query.get(assignment_id)
+    return render_template('assignment.html', assignments=assignment)
+    
+
+
 
 @app.route('/insert', methods=['POST'])
 def insert():
@@ -105,7 +146,7 @@ def update():
         
         flash("User updated successfully")
         
-        return redirect(url_for('home'))
+        return redirect(url_for('dashboard'))
 
 @app.route('/delete/<id>/', methods=['GET', 'POST'])
 def delete(id):
@@ -115,7 +156,7 @@ def delete(id):
         
     flash("User deleted successfully")
         
-    return redirect(url_for('home'))
+    return redirect(url_for('dashboard'))
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -151,6 +192,7 @@ def dashboard():
 
     # Get the user from the database
     user = Users.query.get(user_id)
+    assignments = Assignment.query.all() 
 
     if user.role == 'admin':
         # Logic for admin dashboard
@@ -158,10 +200,10 @@ def dashboard():
         return render_template('admin_dashboard.html',user= user, users=all_data)
     elif user.role == 'teacher':
         # Logic for teacher dashboard
-        return render_template('teacher_dashboard.html', user=user, assignments = Assignment)
+        return render_template('teacher_dashboard.html', user=user, assignments = assignments)
     elif user.role == 'student':
         # Logic for student dashboard
-        return render_template('student_dashboard.html', user=user, assignments = Assignment)
+        return render_template('student_dashboard.html', user=user, assignments = assignments)
     else:
         flash('Invalid user role')
         return redirect(url_for('login'))

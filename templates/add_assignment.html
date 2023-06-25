@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Assignment</title>
+  <link rel="stylesheet" type="text/css" href="{{url_for('static',filename = 'css/bootstrap.css')}}" />
+  
+</head>
+<body>
+  <div class="jumbotron p-3">
+    <div class="well text-center">
+      <h1>Add Assignment </h1>
+    </div>
+  </div>
+  <div class=" jumbotron p-3 container">
+    <form method="POST" action="{{ url_for('add_assignment') }}">
+      <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input type="text" class="form-control" id="title" name="title">
+      </div>
+      <div class="mb-3">
+        <label for="subject" class="form-label">Subject</label>
+        <input type="text" class="form-control" id="subject" name="subject">
+      </div>
+      <div class="mb-3">
+        <label for="class" class="form-label">Class</label>
+        <input type="text" class="form-control" id="class" name="class">
+      </div>
+      <div class="mb-3">
+        <label for="body" class="form-label">Body</label>
+        <textarea class="form-control" id="body" name="body" rows="5"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Add</button>
+    </form>
+
+  </div>
+
+      
+</body>
+</html>
